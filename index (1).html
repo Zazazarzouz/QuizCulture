@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizCulture — Testez vos connaissances gratuitement</title>
+  <meta name="description" content="Quiz gratuits de culture générale, sport, cinéma et géographie. Chrono, score, classement et anecdotes. Jouez maintenant !" />
+  <meta name="keywords" content="quiz gratuit, culture générale, quiz sport, quiz cinéma, quiz géographie, questions réponses" />
+  <meta property="og:title" content="QuizCulture — Testez vos connaissances" />
+  <meta property="og:description" content="4 quiz gratuits : culture générale, sport, cinéma, géographie. Chrono, scores et classement !" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
+
+  <!-- AdSense — décommenter après approbation Google -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXX" crossorigin="anonymous"></script> -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #534AB7;
+      --purple-2: #3C3489;
+      --purple-light: #EEEDFE;
+      --purple-mid: #AFA9EC;
+      --teal: #1D9E75;
+      --teal-light: #E1F5EE;
+      --coral: #D85A30;
+      --coral-light: #FAECE7;
+      --amber: #BA7517;
+      --amber-light: #FAEEDA;
+      --green-bg: #EAF3DE; --green-text: #3B6D11; --green-border: #639922;
+      --red-bg: #FCEBEB; --red-text: #A32D2D; --red-border: #E24B4A;
+      --bg: #F4F3FB;
+      --surface: #FFFFFF;
+      --border: rgba(83,74,183,0.12);
+      --border-strong: rgba(83,74,183,0.22);
+      --text: #1A1826;
+      --text-muted: #6B6880;
+      --text-hint: #A09CB8;
+      --radius: 14px;
+      --radius-sm: 8px;
+      --radius-pill: 999px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0F0E17;
+        --surface: #1A1826;
+        --border: rgba(175,169,236,0.12);
+        --border-strong: rgba(175,169,236,0.22);
+        --text: #F0EEF8;
+        --text-muted: #9B98B0;
+        --text-hint: #5A5870;
+        --purple-light: #1E1B3A;
+        --teal-light: #0A1F18;
+        --coral-light: #1F1008;
+        --amber-light: #1A1205;
+        --green-bg: #0D1F08; --green-text: #97C459;
+        --red-bg: #1F0808; --red-text: #F09595;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--surface);
+      border-bottom: 0.5px solid var(--border);
+      padding: 0 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .nav-logo {
+      font-size: 17px; font-weight: 700; color: var(--purple);
+      text-decoration: none; display: flex; align-items: center; gap: 8px; letter-spacing: -0.3px;
+    }
+    .nav-links { display: flex; gap: 4px; }
+    .nav-link {
+      font-size: 13px; color: var(--text-muted); text-decoration: none;
+      padding: 6px 12px; border-radius: var(--radius-sm);
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-link:hover, .nav-link.active { background: var(--purple-light); color: var(--purple); }
+    @media (max-width: 480px) { .nav-links { display: none; } }
+
+    /* ── AD SLOTS ── */
+    .ad-slot {
+      width: 100%; display: flex; align-items: center; justify-content: center;
+      padding: 8px; background: var(--surface); border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border);
+    }
+    .ad-inner {
+      width: 100%; max-width: 728px; min-height: 70px;
+      background: var(--bg); border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;
+      color: var(--text-hint); font-size: 11px; text-align: center; padding: 8px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 4rem 1.5rem 3rem;
+      text-align: center;
+      background: var(--surface);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(83,74,183,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--purple-light); color: var(--purple-2);
+      border-radius: var(--radius-pill); padding: 5px 14px;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.03em;
+      margin-bottom: 1.25rem;
+      animation: fadeUp 0.5s ease both;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 800; letter-spacing: -1px; line-height: 1.15;
+      color: var(--text); margin-bottom: 1rem;
+      animation: fadeUp 0.5s 0.1s ease both;
+    }
+    .hero h1 span { color: var(--purple); }
+    .hero-sub {
+      font-size: 16px; color: var(--text-muted); line-height: 1.6;
+      max-width: 480px; margin: 0 auto 2rem;
+      animation: fadeUp 0.5s 0.2s ease both;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--purple); color: #fff;
+      border-radius: var(--radius-pill); padding: 14px 28px;
+      font-size: 15px; font-weight: 700; text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+      animation: fadeUp 0.5s 0.3s ease both;
+    }
+    .hero-cta:hover { opacity: 0.88; transform: translateY(-2px); }
+    .hero-stats {
+      display: flex; align-items: center; justify-content: center; gap: 2rem;
+      margin-top: 2.5rem; flex-wrap: wrap;
+      animation: fadeUp 0.5s 0.4s ease both;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-n { font-size: 26px; font-weight: 800; color: var(--purple); line-height: 1; }
+    .hero-stat-l { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+    .hero-divider { width: 1px; height: 36px; background: var(--border-strong); }
+    @media (max-width: 480px) { .hero-divider { display: none; } }
+
+    /* ── SECTIONS ── */
+    .section { padding: 3rem 1.5rem; max-width: 960px; margin: 0 auto; }
+    .section-header { margin-bottom: 1.75rem; }
+    .section-eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      color: var(--purple); text-transform: uppercase; margin-bottom: 6px;
+    }
+    .section-title { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; }
+    .section-sub { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+    /* ── QUIZ GRID ── */
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .quiz-card {
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      cursor: pointer; transition: transform 0.15s, border-color 0.15s;
+      display: flex; flex-direction: column;
+    }
+    .quiz-card:hover { transform: translateY(-3px); border-color: var(--purple-mid); }
+    .quiz-card-top {
+      height: 88px; display: flex; align-items: center; justify-content: center;
+      font-size: 40px; position: relative;
+    }
+    .quiz-badge {
+      position: absolute; top: 8px; right: 8px;
+      font-size: 10px; font-weight: 700; padding: 3px 8px;
+      border-radius: var(--radius-pill);
+    }
+    .badge-hot { background: var(--coral-light); color: var(--coral); }
+    .badge-new { background: var(--teal-light); color: var(--teal); }
+    .quiz-card-body { padding: 14px; flex: 1; display: flex; flex-direction: column; }
+    .quiz-card-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .quiz-card-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+    .quiz-card-rating { color: #EF9F27; font-size: 11px; }
+    .quiz-card-btn {
+      margin-top: auto;
+      background: var(--purple-light); color: var(--purple-2);
+      border: none; border-radius: var(--radius-sm);
+      padding: 9px; font-size: 13px; font-weight: 700;
+      cursor: pointer; width: 100%;
+      transition: background 0.15s;
+      font-family: inherit;
+    }
+    .quiz-card-btn:hover { background: var(--purple); color: #fff; }
+
+    /* ── LEADERBOARD ── */
+    .leaderboard-wrap {
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .lb-head {
+      padding: 1rem 1.25rem; border-bottom: 0.5px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .lb-head-title { font-size: 15px; font-weight: 700; }
+    .lb-tabs { display: flex; gap: 4px; }
+    .lb-tab {
+      font-size: 12px; padding: 4px 10px; border-radius: var(--radius-sm);
+      border: none; background: transparent; color: var(--text-muted);
+      cursor: pointer; font-family: inherit; transition: background 0.15s;
+    }
+    .lb-tab.active { background: var(--purple-light); color: var(--purple); font-weight: 600; }
+    .lb-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 1.25rem; border-bottom: 0.5px solid var(--border);
+      transition: background 0.1s;
+    }
+    .lb-row:last-child { border-bottom: none; }
+    .lb-row:hover { background: var(--bg); }
+    .lb-rank {
+      width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; flex-shrink: 0;
+    }
+    .rank-1 { background: #FAEEDA; color: #854F0B; }
+    .rank-2 { background: #F1EFE8; color: #5F5E5A; }
+    .rank-3 { background: var(--coral-light); color: var(--coral); }
+    .rank-other { background: var(--bg); color: var(--text-muted); }
+    .lb-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--purple-light); color: var(--purple-2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; flex-shrink: 0;
+    }
+    .lb-info { flex: 1; min-width: 0; }
+    .lb-name { font-size: 13px; font-weight: 600; }
+    .lb-quiz { font-size: 11px; color: var(--text-muted); }
+    .lb-right { text-align: right; flex-shrink: 0; }
+    .lb-score { font-size: 15px; font-weight: 800; color: var(--purple); }
+    .lb-time { font-size: 11px; color: var(--text-muted); }
+    .lb-bar-wrap { width: 80px; }
+    .lb-bar-bg { background: var(--bg); border-radius: 99px; height: 4px; }
+    .lb-bar-fill { height: 4px; border-radius: 99px; background: var(--purple); transition: width 1s ease; }
+
+    /* ── HOW IT WORKS ── */
+    .how-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .how-card {
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem;
+    }
+    .how-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 12px;
+    }
+    .how-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+    .how-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── QUIZ MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(15,14,23,0.7); align-items: flex-start;
+      justify-content: center; padding: 1rem; overflow-y: auto;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--surface); border-radius: var(--radius);
+      width: 100%; max-width: 580px; margin: auto;
+      border: 0.5px solid var(--border); overflow: hidden;
+    }
+    .modal-header {
+      padding: 1rem 1.25rem; border-bottom: 0.5px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-title { font-size: 16px; font-weight: 700; }
+    .modal-close {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--bg); border: none; cursor: pointer;
+      font-size: 16px; display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-family: inherit;
+    }
+    .modal-body { padding: 1.25rem; }
+
+    /* ── QUIZ GAMEPLAY ── */
+    .progress-bg { background: var(--border); border-radius: 99px; height: 5px; margin-bottom: 1.25rem; overflow: hidden; }
+    .progress-fill { height: 5px; border-radius: 99px; background: var(--purple); transition: width 0.4s ease; }
+    .q-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .q-counter { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+    .timer-wrap { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; }
+    .timer-svg { width: 34px; height: 34px; }
+    .q-text { font-size: 17px; font-weight: 700; line-height: 1.5; margin-bottom: 1.25rem; }
+    .answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+    @media (max-width: 400px) { .answers-grid { grid-template-columns: 1fr; } }
+    .answer-btn {
+      background: var(--surface); border: 0.5px solid var(--border-strong);
+      border-radius: var(--radius); padding: 13px 12px;
+      font-size: 14px; color: var(--text); cursor: pointer;
+      text-align: left; line-height: 1.4; font-family: inherit;
+      transition: background 0.12s, border-color 0.12s, transform 0.1s;
+    }
+    .answer-btn:hover:not(:disabled) { background: var(--purple-light); border-color: var(--purple); transform: translateY(-1px); }
+    .answer-btn.correct { background: var(--green-bg); border-color: var(--green-border); color: var(--green-text); }
+    .answer-btn.wrong { background: var(--red-bg); border-color: var(--red-border); color: var(--red-text); }
+    .answer-btn.reveal { background: var(--green-bg); border-color: var(--green-border); color: var(--green-text); }
+    .answer-btn:disabled { cursor: default; transform: none; }
+    .feedback-box { border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; line-height: 1.5; margin-bottom: 1rem; display: none; }
+    .feedback-box.correct { background: var(--green-bg); color: var(--green-text); }
+    .feedback-box.wrong { background: var(--red-bg); color: var(--red-text); }
+    .ad-ingame-wrap { display: none; margin-bottom: 1rem; }
+    .ad-ingame-inner { background: var(--bg); border: 1px dashed var(--border-strong); border-radius: var(--radius-sm); padding: 8px; font-size: 11px; color: var(--text-hint); text-align: center; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+    .btn-primary {
+      width: 100%; padding: 13px; border-radius: var(--radius);
+      border: none; background: var(--purple); color: #fff;
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s; font-family: inherit;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+
+    /* ── RESULTS ── */
+    .result-hero { text-align: center; padding: 1.5rem 1rem; }
+    .result-emoji { font-size: 52px; display: block; margin-bottom: 0.75rem; }
+    .result-pct { font-size: 52px; font-weight: 800; color: var(--purple); line-height: 1; }
+    .result-sub { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+    .result-msg { font-size: 15px; margin-top: 10px; line-height: 1.5; }
+    .result-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 1rem 0; }
+    .rs-card { background: var(--bg); border-radius: var(--radius-sm); padding: 0.875rem; text-align: center; }
+    .rs-val { font-size: 22px; font-weight: 800; color: var(--text); }
+    .rs-lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .btn-secondary {
+      width: 100%; padding: 13px; border-radius: var(--radius);
+      border: 0.5px solid var(--border-strong); background: var(--surface);
+      color: var(--text); font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: background 0.15s; margin-bottom: 10px; font-family: inherit;
+    }
+    .btn-secondary:hover { background: var(--bg); }
+    .name-input-wrap { margin: 1rem 0; }
+    .name-input-wrap label { font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 6px; }
+    .name-input {
+      width: 100%; padding: 10px 14px; border-radius: var(--radius-sm);
+      border: 0.5px solid var(--border-strong); background: var(--surface);
+      font-size: 14px; color: var(--text); font-family: inherit; outline: none;
+    }
+    .name-input:focus { border-color: var(--purple); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 0.5px solid var(--border); background: var(--surface);
+      padding: 2rem 1.5rem; text-align: center;
+    }
+    .footer-logo { font-size: 20px; font-weight: 800; color: var(--purple); margin-bottom: 0.5rem; }
+    .footer-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin: 1rem 0; }
+    .footer-link { font-size: 13px; color: var(--text-muted); text-decoration: none; }
+    .footer-link:hover { color: var(--purple); }
+    .footer-copy { font-size: 12px; color: var(--text-hint); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes countUp { from { opacity: 0; } to { opacity: 1; } }
+    .reveal { animation: fadeUp 0.5s ease both; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a class="nav-logo" href="#accueil">🧠 QuizCulture</a>
+  <div class="nav-links">
+    <a class="nav-link active" href="#accueil">Accueil</a>
+    <a class="nav-link" href="#quiz">Quiz</a>
+    <a class="nav-link" href="#classement">Classement</a>
+  </div>
+</nav>
+
+<!-- ═══ AD HEADER ═══ -->
+<div class="ad-slot">
+  <div class="ad-inner">
+    📢 Publicité (728×90) — remplacer par code AdSense après approbation
+    <!-- <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-XXXX" data-ad-slot="XXXX"></ins> -->
+  </div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="accueil">
+  <div class="hero-eyebrow">✨ 100% gratuit · Aucune inscription</div>
+  <h1>Teste ta <span>culture générale</span><br>en 60 secondes</h1>
+  <p class="hero-sub">4 quiz disponibles · Chrono · Anecdotes · Classement mondial.<br>Oserez-vous partager votre score ?</p>
+  <a class="hero-cta" href="#quiz">Jouer maintenant →</a>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-n" id="count-quiz">0</div>
+      <div class="hero-stat-l">Quiz disponibles</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-n" id="count-questions">0</div>
+      <div class="hero-stat-l">Questions</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-n" id="count-players">0</div>
+      <div class="hero-stat-l">Parties jouées</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AD MID ═══ -->
+<div class="ad-slot">
+  <div class="ad-inner">
+    📢 Publicité (728×90) — remplacer par code AdSense
+  </div>
+</div>
+
+<!-- ═══ QUIZ GRID ═══ -->
+<div id="quiz">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">🎮 Nos quiz</div>
+      <div class="section-title">Choisissez votre défi</div>
+      <div class="section-sub">Chaque quiz : 10 questions, 20 secondes par question, anecdote après chaque réponse</div>
+    </div>
+    <div class="quiz-grid" id="quiz-grid"></div>
+  </div>
+</div>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<div style="background: var(--surface); border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border);">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">❓ Comment ça marche</div>
+      <div class="section-title">Simple, rapide, addictif</div>
+    </div>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-icon" style="background:var(--purple-light)">🎯</div>
+        <div class="how-title">Choisissez un thème</div>
+        <div class="how-desc">Culture générale, sport, cinéma ou géographie — il y en a pour tous les goûts.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-icon" style="background:var(--teal-light)">⏱</div>
+        <div class="how-title">Répondez vite</div>
+        <div class="how-desc">20 secondes par question. Chaque seconde compte pour votre score final.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-icon" style="background:var(--amber-light)">💡</div>
+        <div class="how-title">Apprenez en jouant</div>
+        <div class="how-desc">Une anecdote s'affiche après chaque réponse. Vous en apprendrez plus qu'à l'école !</div>
+      </div>
+      <div class="how-card">
+        <div class="how-icon" style="background:var(--coral-light)">🏆</div>
+        <div class="how-title">Grimpez au classement</div>
+        <div class="how-desc">Entrez votre pseudo et rejoignez le top des meilleurs joueurs de la semaine.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LEADERBOARD ═══ -->
+<div id="classement">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">🏆 Classement</div>
+      <div class="section-title">Top joueurs</div>
+      <div class="section-sub">Les meilleurs scores de la semaine — à vous de les battre !</div>
+    </div>
+    <div class="leaderboard-wrap">
+      <div class="lb-head">
+        <div class="lb-head-title">Meilleurs scores</div>
+        <div class="lb-tabs">
+          <button class="lb-tab active" onclick="filterLB('all', this)">Tous</button>
+          <button class="lb-tab" onclick="filterLB('culture', this)">Culture</button>
+          <button class="lb-tab" onclick="filterLB('sport', this)">Sport</button>
+          <button class="lb-tab" onclick="filterLB('cinema', this)">Cinéma</button>
+          <button class="lb-tab" onclick="filterLB('geo', this)">Géo</button>
+        </div>
+      </div>
+      <div id="lb-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AD BOTTOM ═══ -->
+<div class="ad-slot" style="margin-bottom: 0;">
+  <div class="ad-inner" style="max-width:300px; min-height:250px;">
+    📢 Publicité (300×250) — emplacement très rentable<br>
+    <!-- <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-XXXX" data-ad-slot="XXXX"></ins> -->
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-logo">🧠 QuizCulture</div>
+  <p style="font-size:13px;color:var(--text-muted);margin-bottom:0.5rem">Quiz gratuits de culture générale, sport, cinéma et géographie</p>
+  <div class="footer-links">
+    <a class="footer-link" href="#accueil">Accueil</a>
+    <a class="footer-link" href="#quiz">Quiz</a>
+    <a class="footer-link" href="#classement">Classement</a>
+    <a class="footer-link" href="privacy.html">Politique de confidentialité</a>
+    <a class="footer-link" href="mentions.html">Mentions légales</a>
+  </div>
+  <div class="footer-copy">© 2026 QuizCulture · Fait avec ❤️ · Tous droits réservés</div>
+</footer>
+
+<!-- ═══ MODAL QUIZ ═══ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Quiz</div>
+      <button class="modal-close" onclick="closeModal()" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+var quizData = [
+  {
+    id: 'culture',
+    title: 'Culture Générale',
+    emoji: '🧠',
+    color: '#EEEDFE',
+    badge: 'hot',
+    rating: '4.8',
+    desc: 'Histoire, science, géographie...',
+    questions: [
+      { q: "Quelle est la capitale de l'Australie ?", a: ["Sydney","Melbourne","Canberra","Brisbane"], c: 2, info: "Beaucoup pensent que c'est Sydney, mais Canberra est la capitale depuis 1927 !" },
+      { q: "Combien de planètes compte notre système solaire ?", a: ["7","8","9","10"], c: 1, info: "Pluton a été reclassifiée en planète naine en 2006 par l'Union Astronomique Internationale." },
+      { q: "Qui a peint la Joconde ?", a: ["Michel-Ange","Raphaël","Léonard de Vinci","Botticelli"], c: 2, info: "Léonard de Vinci a peint la Joconde entre 1503 et 1519. Elle est exposée au Louvre." },
+      { q: "En quelle année a débuté la Première Guerre mondiale ?", a: ["1912","1914","1916","1918"], c: 1, info: "Le déclencheur fut l'assassinat de l'archiduc François-Ferdinand à Sarajevo." },
+      { q: "Quel est l'élément chimique dont le symbole est 'Au' ?", a: ["Argent","Aluminium","Or","Azote"], c: 2, info: "Au vient du latin 'Aurum'. L'or est utilisé depuis des millénaires comme monnaie." },
+      { q: "Quel pays possède la plus grande superficie du monde ?", a: ["Canada","Chine","USA","Russie"], c: 3, info: "La Russie couvre 17,1 millions de km², soit presque deux fois la taille du Canada !" },
+      { q: "Combien d'os compte le corps humain adulte ?", a: ["186","206","226","246"], c: 1, info: "Les bébés naissent avec 270 os. Certains fusionnent en grandissant." },
+      { q: "Quelle est la langue la plus parlée dans le monde ?", a: ["Anglais","Espagnol","Mandarin","Hindi"], c: 2, info: "Le mandarin compte 1,1 milliard de locuteurs natifs." },
+      { q: "Quel scientifique a formulé la théorie de la relativité ?", a: ["Newton","Tesla","Curie","Einstein"], c: 3, info: "Einstein a publié la relativité restreinte en 1905, puis la générale en 1915." },
+      { q: "Dans quel pays se trouve le Machu Picchu ?", a: ["Bolivie","Mexique","Pérou","Colombie"], c: 2, info: "Le Machu Picchu est une cité inca à 2430 mètres d'altitude au Pérou." }
+    ]
+  },
+  {
+    id: 'sport',
+    title: 'Sport',
+    emoji: '⚽',
+    color: '#E1F5EE',
+    badge: 'new',
+    rating: '4.6',
+    desc: 'Football, tennis, JO et plus...',
+    questions: [
+      { q: "Combien de joueurs compte une équipe de football sur le terrain ?", a: ["9","10","11","12"], c: 2, info: "11 joueurs par équipe, dont un gardien. La règle date de 1863." },
+      { q: "Quel pays a remporté le plus de Coupes du Monde de football ?", a: ["Allemagne","Argentine","Brésil","France"], c: 2, info: "Le Brésil détient 5 titres mondiaux (1958, 1962, 1970, 1994, 2002)." },
+      { q: "Aux Jeux Olympiques, de quelle couleur est la médaille du 1er ?", a: ["Bronze","Argent","Or","Platine"], c: 2, info: "Depuis 1912, la médaille d'or est en réalité surtout en argent plaqué or." },
+      { q: "Quel est le surnom de Roger Federer ?", a: ["Le Maître","Le Roi","Le Maestro","L'Artiste"], c: 2, info: "Federer est surnommé 'le Maestro' pour son jeu élégant et son 20 titres du Grand Chelem." },
+      { q: "Dans quel sport utilise-t-on un volant ?", a: ["Tennis","Squash","Badminton","Ping-pong"], c: 2, info: "Le volant de badminton peut atteindre 300 km/h lors des smashes professionnels !" },
+      { q: "Combien de tours compte le Tour de France ?", a: ["18","19","20","21"], c: 3, info: "Le Tour de France compte 21 étapes sur environ 3500 km, créé en 1903." },
+      { q: "Quel athlète détient le record du 100m aux JO ?", a: ["Asafa Powell","Usain Bolt","Justin Gatlin","Tyson Gay"], c: 1, info: "Usain Bolt a couru le 100m en 9.58s à Berlin en 2009, un record du monde." },
+      { q: "Quel pays a inventé le basketball ?", a: ["USA","Canada","Angleterre","France"], c: 0, info: "James Naismith, un Canadien, a inventé le basketball en 1891 dans le Massachusetts." },
+      { q: "Combien de sets gagne-t-on une finale de Roland-Garros (hommes) ?", a: ["2","3","4","5"], c: 1, info: "En Grand Chelem masculin, il faut gagner 3 sets sur 5 pour remporter le match." },
+      { q: "Quel club a remporté le plus de Ligues des Champions ?", a: ["Bayern Munich","Barcelona","Liverpool","Real Madrid"], c: 3, info: "Le Real Madrid a remporté 15 Ligues des Champions, loin devant tous les autres clubs." }
+    ]
+  },
+  {
+    id: 'cinema',
+    title: 'Cinéma',
+    emoji: '🎬',
+    color: '#FAECE7',
+    badge: 'new',
+    rating: '4.7',
+    desc: 'Films, réalisateurs, oscars...',
+    questions: [
+      { q: "Quel film a remporté le premier Oscar du meilleur film ?", a: ["Les Ailes","Ben-Hur","Citizen Kane","Titanic"], c: 0, info: "'Les Ailes' (Wings) a remporté le premier Oscar du meilleur film en 1929." },
+      { q: "Qui a réalisé le film 'Inception' ?", a: ["James Cameron","Christopher Nolan","Steven Spielberg","Ridley Scott"], c: 1, info: "Christopher Nolan a réalisé Inception en 2010, avec Leonardo DiCaprio." },
+      { q: "Dans quel film trouve-t-on la réplique 'Je serai de retour' ?", a: ["RoboCop","Matrix","Terminator","Predator"], c: 2, info: "'I'll be back' est la célèbre réplique d'Arnold Schwarzenegger dans Terminator (1984)." },
+      { q: "Quel film Disney met en scène Simba ?", a: ["Bambi","Le Livre de la Jungle","Le Roi Lion","Tarzan"], c: 2, info: "Le Roi Lion (1994) est inspiré de Hamlet de Shakespeare. Il a été remastérisé en 2019." },
+      { q: "Combien d'Oscars a remporté Titanic (1997) ?", a: ["9","11","13","14"], c: 1, info: "Titanic a remporté 11 Oscars en 1998, à égalité avec Ben-Hur et Le Seigneur des Anneaux." },
+      { q: "Qui joue le rôle de Jack dans Titanic ?", a: ["Brad Pitt","Tom Hanks","Leonardo DiCaprio","Matt Damon"], c: 2, info: "Leonardo DiCaprio avait 22 ans lors du tournage de Titanic en 1996." },
+      { q: "Quel est le film le plus rentable de tous les temps ?", a: ["Avatar","Avengers Endgame","Titanic","Star Wars"], c: 0, info: "Avatar (2009) de James Cameron reste le film le plus rentable avec 2,9 milliards de dollars." },
+      { q: "Dans quel pays est né le cinéma ?", a: ["USA","Angleterre","France","Allemagne"], c: 2, info: "Les frères Lumière ont inventé le cinématographe à Lyon en 1895. 1ère projection le 28 déc." },
+      { q: "Quel acteur joue Iron Man dans l'univers Marvel ?", a: ["Chris Evans","Chris Hemsworth","Robert Downey Jr","Mark Ruffalo"], c: 2, info: "Robert Downey Jr. a incarné Tony Stark / Iron Man de 2008 à 2019." },
+      { q: "Quel film de Stanley Kubrick se passe dans l'espace ?", a: ["Full Metal Jacket","Shining","2001 l'Odyssée de l'Espace","Eyes Wide Shut"], c: 2, info: "2001 : L'Odyssée de l'Espace (1968) est considéré comme l'un des plus grands films de l'histoire." }
+    ]
+  },
+  {
+    id: 'geo',
+    title: 'Géographie',
+    emoji: '🌍',
+    color: '#FAEEDA',
+    badge: 'new',
+    rating: '4.5',
+    desc: 'Capitales, fleuves, continents...',
+    questions: [
+      { q: "Quel est le plus grand océan du monde ?", a: ["Atlantique","Indien","Arctique","Pacifique"], c: 3, info: "L'océan Pacifique couvre 165 millions de km², soit plus que toutes les terres émergées réunies !" },
+      { q: "Quelle est la capitale du Japon ?", a: ["Osaka","Kyoto","Tokyo","Hiroshima"], c: 2, info: "Tokyo est la métropole la plus peuplée du monde avec 37 millions d'habitants dans l'aire urbaine." },
+      { q: "Quel est le plus long fleuve du monde ?", a: ["Amazone","Mississippi","Congo","Nil"], c: 3, info: "Le Nil mesure environ 6650 km. L'Amazone est parfois considéré plus long selon les sources." },
+      { q: "Sur quel continent se trouve l'Égypte ?", a: ["Asie","Europe","Afrique","Moyen-Orient"], c: 2, info: "L'Égypte est en Afrique du Nord-Est, bien que le Sinaï soit en Asie. C'est un pays transcontinental." },
+      { q: "Combien de pays compose le continent africain ?", a: ["44","54","64","74"], c: 1, info: "L'Afrique compte 54 pays reconnus, c'est le continent avec le plus grand nombre de pays." },
+      { q: "Quelle est la plus haute montagne du monde ?", a: ["K2","Mont Blanc","Everest","Kilimandjaro"], c: 2, info: "L'Everest culmine à 8849 mètres. Il a été gravi pour la première fois en 1953 par Hillary et Norgay." },
+      { q: "Quelle ville est surnommée 'La Ville des Lumières' ?", a: ["Rome","Londres","New York","Paris"], c: 3, info: "Paris doit ce surnom à son rôle dans les Lumières du XVIIIe siècle, et à son éclairage public pionnier." },
+      { q: "Quel pays possède le plus grand nombre d'îles ?", a: ["Indonésie","Philippines","Suède","Japon"], c: 2, info: "La Suède possède plus de 221 800 îles, dont environ 1000 sont habitées." },
+      { q: "Quelle mer sépare l'Europe de l'Afrique ?", a: ["Mer Noire","Mer Rouge","Mer Méditerranée","Mer Caspienne"], c: 2, info: "La Méditerranée borde 21 pays. Son nom signifie 'au milieu des terres' en latin." },
+      { q: "Quelle est la capitale du Canada ?", a: ["Toronto","Montréal","Vancouver","Ottawa"], c: 3, info: "Ottawa est la capitale depuis 1857. Beaucoup pensent que c'est Toronto, la plus grande ville." }
+    ]
+  }
+];
+
+var leaderboard = [
+  { name: "Alexandre M.", initials: "AM", quiz: "culture", score: 100, time: "8.2s", pct: 100 },
+  { name: "Sophie K.", initials: "SK", quiz: "cinema", score: 90, time: "11.4s", pct: 90 },
+  { name: "Thomas R.", initials: "TR", quiz: "sport", score: 90, time: "13.1s", pct: 90 },
+  { name: "Lucie D.", initials: "LD", quiz: "geo", score: 80, time: "9.8s", pct: 80 },
+  { name: "Marc B.", initials: "MB", quiz: "culture", score: 80, time: "14.2s", pct: 80 },
+  { name: "Emma V.", initials: "EV", quiz: "cinema", score: 70, time: "12.0s", pct: 70 },
+  { name: "Hugo F.", initials: "HF", quiz: "sport", score: 70, time: "15.5s", pct: 70 }
+];
+
+var quizLabels = { culture: "🧠 Culture", sport: "⚽ Sport", cinema: "🎬 Cinéma", geo: "🌍 Géo" };
+
+var currentQ = 0, currentScore = 0, currentWrong = 0, timerInt, timeLeft, totalTime = 0, qStart, activeQuiz = null;
+
+function buildQuizGrid() {
+  var g = document.getElementById('quiz-grid');
+  quizData.forEach(function(q) {
+    var badge = q.badge === 'hot'
+      ? '<span class="quiz-badge badge-hot">🔥 Populaire</span>'
+      : '<span class="quiz-badge badge-new">✨ Nouveau</span>';
+    var stars = '⭐'.repeat(Math.round(parseFloat(q.rating)));
+    g.innerHTML += '<div class="quiz-card" onclick="openQuiz(\'' + q.id + '\')">' +
+      '<div class="quiz-card-top" style="background:' + q.color + '">' + q.emoji + badge + '</div>' +
+      '<div class="quiz-card-body">' +
+        '<div class="quiz-card-title">' + q.title + '</div>' +
+        '<div class="quiz-card-meta">' + stars + ' ' + q.rating + ' · 10 questions</div>' +
+        '<div class="quiz-card-meta">' + q.desc + '</div>' +
+        '<button class="quiz-card-btn">Jouer →</button>' +
+      '</div></div>';
+  });
+}
+
+function buildLeaderboard(filter) {
+  var list = document.getElementById('lb-list');
+  var data = filter === 'all' ? leaderboard : leaderboard.filter(function(r){ return r.quiz === filter; });
+  list.innerHTML = '';
+  data.forEach(function(r, i) {
+    var rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-other';
+    list.innerHTML += '<div class="lb-row">' +
+      '<div class="lb-rank ' + rankClass + '">' + (i+1) + '</div>' +
+      '<div class="lb-avatar">' + r.initials + '</div>' +
+      '<div class="lb-info"><div class="lb-name">' + r.name + '</div><div class="lb-quiz">' + quizLabels[r.quiz] + '</div></div>' +
+      '<div class="lb-bar-wrap"><div class="lb-bar-bg"><div class="lb-bar-fill" style="width:' + r.pct + '%"></div></div></div>' +
+      '<div class="lb-right"><div class="lb-score">' + r.score + '%</div><div class="lb-time">moy. ' + r.time + '</div></div>' +
+    '</div>';
+  });
+}
+
+function filterLB(filter, btn) {
+  document.querySelectorAll('.lb-tab').forEach(function(t){ t.classList.remove('active'); });
+  btn.classList.add('active');
+  buildLeaderboard(filter);
+}
+
+function animateCounter(id, target, suffix) {
+  var el = document.getElementById(id);
+  var start = 0; var dur = 1200; var startTime = null;
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    var prog = Math.min((ts - startTime) / dur, 1);
+    var val = Math.round(prog * target);
+    el.textContent = val + (suffix || '');
+    if (prog < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function openQuiz(id) {
+  activeQuiz = quizData.find(function(q){ return q.id === id; });
+  document.getElementById('modal-title').textContent = activeQuiz.emoji + ' ' + activeQuiz.title;
+  currentQ = 0; currentScore = 0; currentWrong = 0; totalTime = 0;
+  renderQuestion();
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  clearInterval(timerInt);
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function renderQuestion() {
+  var q = activeQuiz.questions[currentQ];
+  var pct = (currentQ / activeQuiz.questions.length) * 100;
+  document.getElementById('modal-body').innerHTML =
+    '<div class="progress-bg"><div class="progress-fill" id="pf" style="width:' + pct + '%"></div></div>' +
+    '<div class="q-meta">' +
+      '<span class="q-counter">Question ' + (currentQ+1) + ' / ' + activeQuiz.questions.length + '</span>' +
+      '<div class="timer-wrap">' +
+        '<svg class="timer-svg" viewBox="0 0 34 34" aria-hidden="true">' +
+          '<circle cx="17" cy="17" r="14" fill="none" stroke="rgba(0,0,0,.1)" stroke-width="2.5"/>' +
+          '<circle id="tarc" cx="17" cy="17" r="14" fill="none" stroke="#534AB7" stroke-width="2.5" stroke-dasharray="88" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 17 17)" style="transition:stroke-dashoffset 1s linear,stroke .3s"/>' +
+        '</svg>' +
+        '<span id="ttxt">20</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="q-text">' + q.q + '</div>' +
+    '<div class="answers-grid" id="ag"></div>' +
+    '<div class="feedback-box" id="fb"></div>' +
+    '<div class="ad-ingame-wrap" id="adwrap"><div class="ad-ingame-inner">📢 Publicité in-game — remplacer par code AdSense</div></div>' +
+    '<button class="btn-primary" id="nxtbtn" style="display:none" onclick="nextQ()">Question suivante →</button>';
+
+  var ag = document.getElementById('ag');
+  q.a.forEach(function(ans, i) {
+    var b = document.createElement('button');
+    b.className = 'answer-btn';
+    b.textContent = ans;
+    b.addEventListener('click', function(){ selectAns(i); });
+    ag.appendChild(b);
+  });
+
+  qStart = Date.now();
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(timerInt);
+  timeLeft = 20;
+  updateTimer();
+  timerInt = setInterval(function(){
+    timeLeft--;
+    updateTimer();
+    if (timeLeft <= 0) { clearInterval(timerInt); timeUp(); }
+  }, 1000);
+}
+
+function updateTimer() {
+  var t = document.getElementById('ttxt');
+  var arc = document.getElementById('tarc');
+  if (!t || !arc) return;
+  t.textContent = timeLeft;
+  arc.setAttribute('stroke-dashoffset', (88*(1-timeLeft/20)).toFixed(1));
+  arc.setAttribute('stroke', timeLeft <= 5 ? '#E24B4A' : '#534AB7');
+}
+
+function timeUp() {
+  currentWrong++;
+  revealAnswers(activeQuiz.questions[currentQ].c, -1);
+  showFeedback(false, 'Temps écoulé ! ' + activeQuiz.questions[currentQ].info);
+}
+
+function selectAns(idx) {
+  clearInterval(timerInt);
+  totalTime += Math.min((Date.now() - qStart)/1000, 20);
+  var ok = idx === activeQuiz.questions[currentQ].c;
+  if (ok) currentScore++; else currentWrong++;
+  revealAnswers(activeQuiz.questions[currentQ].c, idx);
+  showFeedback(ok, (ok ? 'Bravo ! ' : 'Incorrect. ') + activeQuiz.questions[currentQ].info);
+}
+
+function revealAnswers(correct, chosen) {
+  document.querySelectorAll('.answer-btn').forEach(function(b, i){
+    b.disabled = true;
+    if (i === correct) b.classList.add(chosen === -1 ? 'reveal' : 'correct');
+    else if (i === chosen) b.classList.add('wrong');
+  });
+}
+
+function showFeedback(ok, text) {
+  var fb = document.getElementById('fb');
+  fb.textContent = (ok ? '✓ ' : '✗ ') + text;
+  fb.className = 'feedback-box ' + (ok ? 'correct' : 'wrong');
+  fb.style.display = 'block';
+  var nb = document.getElementById('nxtbtn');
+  nb.style.display = 'block';
+  nb.textContent = currentQ < activeQuiz.questions.length - 1 ? 'Question suivante →' : 'Voir mes résultats →';
+  if (!ok) document.getElementById('adwrap').style.display = 'block';
+}
+
+function nextQ() {
+  currentQ++;
+  if (currentQ >= activeQuiz.questions.length) showResults();
+  else renderQuestion();
+}
+
+function showResults() {
+  clearInterval(timerInt);
+  var pct = Math.round((currentScore / activeQuiz.questions.length) * 100);
+  var emojis = ['😅','🤔','😊','🎉','🏆'];
+  var msgs = ['Pas de panique, réessaie !', 'Pas mal ! Continue comme ça.', 'Bon score ! Tu connais tes classiques.', 'Excellent ! Tu maîtrises le sujet.', 'Parfait ! Tu es incollable !'];
+  var tier = Math.min(4, Math.floor(pct/21));
+  var avg = totalTime > 0 ? (totalTime/activeQuiz.questions.length).toFixed(1) + 's' : '—';
+
+  document.getElementById('modal-body').innerHTML =
+    '<div class="progress-bg"><div class="progress-fill" style="width:100%"></div></div>' +
+    '<div class="result-hero">' +
+      '<span class="result-emoji">' + emojis[tier] + '</span>' +
+      '<div style="font-size:13px;color:var(--text-muted);margin-bottom:4px">Votre score</div>' +
+      '<div class="result-pct">' + pct + '%</div>' +
+      '<div class="result-sub">' + currentScore + ' / ' + activeQuiz.questions.length + ' bonnes réponses</div>' +
+      '<div class="result-msg">' + msgs[tier] + '</div>' +
+    '</div>' +
+    '<div class="result-stats">' +
+      '<div class="rs-card"><div class="rs-val" style="color:#3B6D11">' + currentScore + '</div><div class="rs-lbl">Bonnes</div></div>' +
+      '<div class="rs-card"><div class="rs-val" style="color:#A32D2D">' + currentWrong + '</div><div class="rs-lbl">Mauvaises</div></div>' +
+      '<div class="rs-card"><div class="rs-val">' + avg + '</div><div class="rs-lbl">Temps moy.</div></div>' +
+    '</div>' +
+    '<div class="name-input-wrap">' +
+      '<label for="pseudo-input">Entrez votre pseudo pour le classement</label>' +
+      '<input id="pseudo-input" class="name-input" type="text" placeholder="Votre pseudo..." maxlength="20" />' +
+    '</div>' +
+    '<div class="ad-slot" style="margin:1rem 0;border-radius:var(--radius-sm);overflow:hidden">' +
+      '<div class="ad-inner" style="min-height:90px">📢 Publicité résultats (300×250) — très rentable !</div>' +
+    '</div>' +
+    '<button class="btn-secondary" onclick="saveAndShare(' + pct + ')">🔗 Sauvegarder & Partager</button>' +
+    '<button class="btn-primary" onclick="restartQuiz()">🔄 Rejouer</button>';
+}
+
+function saveAndShare(pct) {
+  var pseudo = (document.getElementById('pseudo-input').value || 'Anonyme').trim();
+  var initials = pseudo.split(' ').map(function(w){ return w[0]; }).join('').toUpperCase().slice(0,2) || '??';
+  leaderboard.push({ name: pseudo, initials: initials, quiz: activeQuiz.id, score: pct, time: (totalTime/activeQuiz.questions.length).toFixed(1)+'s', pct: pct });
+  leaderboard.sort(function(a,b){ return b.score - a.score; });
+  leaderboard = leaderboard.slice(0, 10);
+  var text = 'J\'ai obtenu ' + pct + '% au quiz ' + activeQuiz.title + ' sur QuizCulture ! (' + currentScore + '/' + activeQuiz.questions.length + ') 🧠 Peux-tu faire mieux ? → zazazarzouz.github.io/QuizCulture';
+  if (navigator.share) {
+    navigator.share({ text: text, url: 'https://zazazarzouz.github.io/QuizCulture' }).catch(function(){});
+  } else {
+    navigator.clipboard.writeText(text).then(function(){ alert('Score copié ! Colle-le où tu veux 🎉'); }).catch(function(){ prompt('Copie ce texte :', text); });
+  }
+}
+
+function restartQuiz() {
+  currentQ = 0; currentScore = 0; currentWrong = 0; totalTime = 0;
+  renderQuestion();
+}
+
+document.getElementById('modal-overlay').addEventListener('click', function(e){
+  if (e.target === this) closeModal();
+});
+
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
+
+window.addEventListener('load', function() {
+  buildQuizGrid();
+  buildLeaderboard('all');
+  animateCounter('count-quiz', 4, '');
+  animateCounter('count-questions', 40, '+');
+  animateCounter('count-players', 1247, '');
+});
+</script>
+</body>
+</html>
